@@ -4,7 +4,7 @@ var mysql=require("mysql");
 var empsRouter=require("./routes/emps");
 var config=require("config");
 
-var port=parseInt(JSON.stringify(config.get("port")));
+
 
  app.use(express.json());
 
@@ -16,9 +16,9 @@ app.use(function(req,res,next){
     next();
 })
 
-app.use("/emps",empsRouter);
+app.use("/product",empsRouter);
 
-app.listen(port,()=>{
+app.listen(9898,()=>{
     console.log("server started");
     
 })

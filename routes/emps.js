@@ -7,10 +7,11 @@ var config=require("config");
 
 
  var connection =mysql.createConnection({
-     host:config.get("host"),
-     database:config.get("database"),
-     user:config.get("user"),
-     password:config.get("password")
+     host:"192.168.0.107",
+     database:"db1",
+     user:"root",
+     password:"root",
+port:9099
  });
 
 connection.connect();
@@ -18,7 +19,7 @@ connection.connect();
 router.use(express.json());
 
 router.get("/",(request,response)=>{
-var querytext=`select * from Emp`;      
+var querytext=`select * from product`;      
     connection.query(querytext,(err,result)=>
     {
     if(err==null)
@@ -35,9 +36,9 @@ var querytext=`select * from Emp`;
     });
 
 
- router.get("/:No",(request,response)=>{
+ router.get("/:id",(request,response)=>{
 
-var querytext=`select * from Emp where No=${request.params.No}`;      
+var querytext=`select * from product where id=${request.params.id}`;      
 connection.query(querytext,(err,result)=>
 {
 if(err==null)
@@ -54,12 +55,12 @@ response.send(JSON.stringify(err));
 });
 
 
-router.put("/:No",(request,response)=>{
-    var No=request.params.No;
-    var Name=request.body.Name;
-    var Age=request.body.Age;
+router.put("/:id",(request,response)=>{
+    var id=request.params.id;
+    var title=request.body.title;
+    var price=request.body.price;
     
-var querytext=`UPDATE Emp SET Name='${Name}',Age=${Age} where No=${No}`;      
+var querytext=`UPDATE product SET title='${title}',price=${price} where id=${id}`;      
 connection.query(querytext,(err,result)=>
 {
 if(err==null)
@@ -82,11 +83,11 @@ router.post("/",(request,response)=>{
     
     if(validationResult.error==null)
     {
-    var No=request.body.No;
-    var Name=request.body.Name;
-    var Age=request.body.Age;
+    var id=request.body.id;
+    var title=request.body.title;
+    var price=request.body.price;
     
-		var querytext=`insert into Emp values(${No},'${Name}',${Age})`;      
+		var querytext=`insert into product values(${id},'${title}',${price})`;      
 		connection.query(querytext,(err,result)=>
 		{
 		if(err==null)
@@ -110,18 +111,18 @@ response.send(JSON.stringify(validationResult.error));
 function Validate(request){
 
 var validationschema={
-    No:Joi.number().required(),
-    Name:Joi.string().required(),
-    Age:Joi.number().min(18).max(60).required()
+    id:Joi.number().required(),
+    title:Joi.string().required(),
+    price:Joi.number().min(0).max(60000).required()
 }
 
 return Joi.validate(request.body,validationschema);
 }
 
 
-router.delete("/:No",(request,response)=>{
+router.delete("/:id",(request,response)=>{
     var No=request.params.No;
-    var querytext=`delete from Emp where No=${No}`;      
+    var querytext=`delete from product where id=${id}`;      
     connection.query(querytext,(err,result)=>
     {
     if(err==null)

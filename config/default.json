@@ -1,7 +1,7 @@
 {
-    "port":7777,
-    "host":"localhost",
-    "database":"AWS",
-    "user":"dac",
-    "password":"dac"
+    "port":9099,
+    "host":"192.168.0.107",
+    "database":"db1",
+    "user":"root",
+    "password":"root"
 }
